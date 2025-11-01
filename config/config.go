@@ -18,17 +18,17 @@ var AppConfig *Config
 
 func LoadConfig() {
     if err := godotenv.Load(); err != nil {
-        log.Println("Не найден файл .env, использующий переменные окружения")
+        log.Println("No .env file found, using environment variables")
     }
 
     AppConfig = &Config{
         Port:      getEnv("PORT", "8080"),
-        JWTSecret: getEnv("JWT_SECRET", "fallback-secret-key"), // Упростили валидацию
+        JWTSecret: getEnv("JWT_SECRET", "fallback-secret-key-change-in-production"),
         MongoURI:  getEnv("MONGODB_URI", "mongodb://localhost:27017"),
         Database:  getEnv("DATABASE_NAME", "chat_bot"),
     }
 
-    log.Println("Конфигурация загружена")
+    log.Println("Configuration loaded successfully")
 }
 
 func getEnv(key, defaultValue string) string {
