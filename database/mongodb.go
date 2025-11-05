@@ -35,7 +35,7 @@ func ConnectDB() error {
 
     InitCollections()
 
-    log.Println("✅ Connected to MongoDB!")
+    log.Println("Connected to MongoDB!")
     return nil
 }
 
@@ -44,6 +44,6 @@ func DisconnectDB() {
         ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
         defer cancel()
         Client.Disconnect(ctx)
-        log.Println("✅ Disconnected from MongoDB")
+        log.Println("Disconnected from MongoDB")
     }
 }

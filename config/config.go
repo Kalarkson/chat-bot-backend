@@ -9,6 +9,7 @@ import (
 
 type Config struct {
     Port      string
+    Cors      string
     JWTSecret string
     MongoURI  string
     Database  string
@@ -22,9 +23,10 @@ func LoadConfig() {
     }
 
     AppConfig = &Config{
-        Port:      getEnv("PORT", "8080"),
+        Cors:      getEnv("CORS", "http://localhost:4003"),
+        Port:      getEnv("PORT", "4002"),
         JWTSecret: getEnv("JWT_SECRET", "fallback-secret-key-change-in-production"),
-        MongoURI:  getEnv("MONGODB_URI", "mongodb://localhost:27017"),
+        MongoURI:  getEnv("MONGODB_URI", "mongodb://Kalarkson:qwerty-chat-bot@chat-bot-mongo:27017/"),
         Database:  getEnv("DATABASE_NAME", "chat_bot"),
     }
 

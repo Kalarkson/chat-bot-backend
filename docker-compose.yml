@@ -4,33 +4,25 @@ services:
     restart: unless-stopped
     build:
       context: .
-    env_file:
-      - .env
-    ports:
-      - "8080:8080"
+      dockerfile: Dockerfile
     environment:
-      - PORT=${PORT}
-      - JWT_SECRET=${JWT_SECRET}
-      - MONGODB_URI=${MONGODB_URI}
-      - DATABASE_NAME=${DATABASE_NAME}
-    volumes:
-      - ./logs:/app/logs
-    depends_on:
-      - mongodb
-
-  mongodb:
-    image: mongo:7.0
-    container_name: mongodb
-    restart: unless-stopped
+      - PORT=4002
     ports:
-      - "27017:27017"
+      - "4002:4002"
+    networks:
+      - chat-bot
+  
+  chat-bot-mongo:
+    container_name: chat-bot-mongo
+    image: mongo
+    restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-      - MONGO_INITDB_DATABASE=${DATABASE_NAME}
-    volumes:
-      - mongodb_data:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      MONGO_INITDB_ROOT_USERNAME: Kalarkson
+      MONGO_INITDB_ROOT_PASSWORD: qwerty-chat-bot
+    ports:
+      - "27019:27017"
+    networks:
+      - chat-bot
 
-volumes:
-  mongodb_data:
+networks:
+  chat-bot:

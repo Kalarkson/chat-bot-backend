@@ -16,13 +16,13 @@ func main() {
     config.LoadConfig()
 
     if err := database.ConnectDB(); err != nil {
-        log.Fatal("❌ Ошибка подключения к БД:", err)
+        log.Fatal("Error connecting to the database:", err)
     }
     defer database.DisconnectDB()
 
     r := gin.Default()
     r.Use(cors.New(cors.Config{
-        AllowOrigins:     []string{"http://localhost:3000"},
+        AllowOrigins:     []string{config.AppConfig.Cors},
         AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
         AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
         AllowCredentials: true,
@@ -57,9 +57,9 @@ func main() {
     })
 
     port := ":" + config.AppConfig.Port
-    log.Printf("🚀 Сервер запущен на порту %s", port)
+    log.Printf("The server is running on the port %s", port)
     
     if err := r.Run(port); err != nil {
-        log.Fatal("❌ Ошибка запуска сервера:", err)
+        log.Fatal("Server startup error:", err)
     }
 }
