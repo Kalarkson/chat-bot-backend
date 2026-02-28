@@ -1,26 +1,36 @@
-DC = docker compose
+dc = docker compose
 
-.PHONY: help up down logs status sd-logs
+up: build
+	$(dc) up -d
 
-help:
-	@echo "Commands:"
-	@echo "  make up     - Start all services (backend + mongo + sd)"
-	@echo "  make down   - Stop all services"
-	@echo "  make logs   - Show logs from all services"
-	@echo "  make status - Show status of all containers"
-	@echo "  make sd-logs - Show only SD logs"
-
-up:
-	$(DC) up -d
+build:
+	$(dc) build
 
 down:
-	$(DC) down
+	$(dc) down
 
-logs:
-	$(DC) logs -f
+stop:
+	$(dc) stop
+	
+restart:
+	$(dc) restart
 
-status:
-	$(DC) ps
+update:
+	git pull
+	$(dc) build
+	$(dc) up -d
 
-sd-logs:
-	$(DC) logs -f sd-webui
+logs: 
+	$(dc) logs
+
+logs-file: 
+	$(dc) logs > compose.log
+
+dev:
+	go run main.go
+
+test:
+	go test ./...
+
+migrate:
+	go run migrations/migrate.go

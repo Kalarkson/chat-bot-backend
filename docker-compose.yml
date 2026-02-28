@@ -1,55 +1,28 @@
-version: '3.8'
-
 services:
-  mongo:
+  backend:
+    container_name: backend
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=4002
+    ports:
+      - "4002:4002"
+    networks:
+      - chat-bot
+  
+  chat-bot-mongo:
     container_name: chat-bot-mongo
-    image: mongo:latest
+    image: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: Kalarkson
       MONGO_INITDB_ROOT_PASSWORD: qwerty-chat-bot
     ports:
       - "27019:27017"
-    volumes:
-      - mongo-data:/data/db
     networks:
-      - chat-bot-network
-
-  backend:
-    container_name: chat-bot-backend
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    environment:
-      - PORT=4002
-      - MONGODB_URI=mongodb://Kalarkson:qwerty-chat-bot@mongo:27017
-    ports:
-      - "4002:4002"
-    networks:
-      - chat-bot-network
-    depends_on:
-      - mongo
-    restart: unless-stopped
-
-  sd-webui:
-    container_name: sd-webui
-    build:
-      context: ./stable-diffusion/services/AUTOMATIC111
-      dockerfile: Dockerfile
-    ports:
-      - "7860:7860"
-    volumes:
-      - ./stable-diffusion/data:/data
-      - ./stable-diffusion/output:/output
-    environment:
-      - CLI_ARGS=--api --listen
-    networks:
-      - chat-bot-network
-    restart: unless-stopped
+      - chat-bot
 
 networks:
-  chat-bot-network:
-    driver: bridge
-
-volumes:
-  mongo-data:
+  chat-bot:
