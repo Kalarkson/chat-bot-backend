@@ -23,7 +23,6 @@ services:
     environment:
       - PORT=4002
       - MONGODB_URI=mongodb://Kalarkson:qwerty-chat-bot@mongo:27017
-      - SD_API_URL=http://sd-webui:7860/sdapi/v1/txt2img
     ports:
       - "4002:4002"
     networks:
@@ -35,7 +34,7 @@ services:
   sd-webui:
     container_name: sd-webui
     build:
-      context: ./stable-diffusion
+      context: ./stable-diffusion/services/AUTOMATIC111
       dockerfile: Dockerfile
     ports:
       - "7860:7860"
