@@ -7,6 +7,9 @@
 
 /mongo-db-data
 
+stable-diffusion/data/
+stable-diffusion/output/
+
 
 
 *.exe
